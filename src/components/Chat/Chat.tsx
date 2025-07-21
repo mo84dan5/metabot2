@@ -139,33 +139,35 @@ const Chat = () => {
       {(lastAssistantMessage || isLoading) && (
         <Box
           sx={{
-            position: 'absolute',
-            bottom: 'calc(100px + env(safe-area-inset-bottom, 0px))', // 入力欄の高さ分上に配置
-            left: '50%',
-            transform: 'translateX(-50%)',
-            zIndex: 100,
+            position: 'fixed',
+            bottom: 'calc(80px + env(safe-area-inset-bottom, 0px))', // 入力欄の直上に配置
+            left: '16px',
+            right: '16px',
+            zIndex: 1200,
             animation: 'fadeIn 0.3s ease-in-out',
             '@keyframes fadeIn': {
               from: {
                 opacity: 0,
-                transform: 'translateX(-50%) translateY(20px)',
+                transform: 'translateY(20px)',
               },
               to: {
                 opacity: 1,
-                transform: 'translateX(-50%) translateY(0)',
+                transform: 'translateY(0)',
               },
             },
           }}
         >
           <Paper
-            elevation={6}
+            elevation={3}
             sx={{
-              p: 3,
-              minWidth: '300px',
-              maxWidth: '600px',
-              backgroundColor: 'rgba(255, 255, 255, 0.98)',
+              p: { xs: 2, sm: 3 },
+              backgroundColor: 'rgba(255, 255, 255, 0.95)',
               backdropFilter: 'blur(20px)',
-              borderRadius: 3,
+              borderRadius: 2,
+              border: '1px solid rgba(0, 0, 0, 0.08)',
+              maxHeight: '40vh',
+              overflow: 'auto',
+              WebkitOverflowScrolling: 'touch',
             }}
           >
             {isLoading ? (
@@ -176,10 +178,10 @@ const Chat = () => {
               <Typography 
                 variant="body1" 
                 sx={{ 
-                  textAlign: 'center',
-                  fontSize: '1.1rem',
-                  lineHeight: 1.6,
-                  color: 'text.primary'
+                  fontSize: { xs: '0.95rem', sm: '1.1rem' },
+                  lineHeight: 1.7,
+                  color: 'text.primary',
+                  whiteSpace: 'pre-wrap',
                 }}
               >
                 {lastAssistantMessage?.content}
