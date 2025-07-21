@@ -40,6 +40,12 @@ const MetabotGLB = ({ onClick, config }: MetabotProps) => {
   const [isAnimating, setIsAnimating] = useState(false);
   const { scene, animations } = useGLTF('/metabot2/models/metabot.glb');
   const { actions } = useAnimations(animations, scene);
+  
+  // デバッグ用ログ
+  useEffect(() => {
+    console.log('GLB model loaded:', scene);
+    console.log('Model scale config:', config.model.scale);
+  }, [scene, config.model.scale]);
 
   // モデルの変換を適用
   useEffect(() => {
@@ -56,6 +62,11 @@ const MetabotGLB = ({ onClick, config }: MetabotProps) => {
         THREE.MathUtils.degToRad(config.model.rotation[1]),
         THREE.MathUtils.degToRad(config.model.rotation[2])
       );
+      
+      // 参考コードと同じように、frustumCulledをfalseに設定
+      scene.traverse((object) => {
+        object.frustumCulled = false;
+      });
     }
   }, [scene, config.model]);
 
