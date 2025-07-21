@@ -11,9 +11,14 @@
     "test": "playwright test",
     "test:ui": "playwright test --ui",
     "test:debug": "playwright test --debug",
+    "commit": "git add -A && git commit -m",
+    "push": "git push",
     "deploy": "npm run build && gh-pages -d dist",
-    "push": "git add -A && git commit -m 'Update' && git push",
-    "publish": "npm run push && npm run deploy"
+    "save": "git add -A && git commit -m 'Update' && git push",
+    "publish": "npm run build && gh-pages -d dist",
+    "release": "git add -A && git commit -m 'Release update' && git push && npm run publish",
+    "quick": "npm run save",
+    "full": "npm run release"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
