@@ -13,7 +13,8 @@
     "test:debug": "playwright test --debug",
     "deploy": "gh-pages -d dist",
     "push": "git add -A && git commit -m 'Update' && git push",
-    "publish": "npm run build && npm run deploy"
+    "publish": "npm run build && npm run deploy",
+    "deploy:local": "npm run build && gh-pages -d dist"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
