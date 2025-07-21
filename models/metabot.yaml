@@ -123,3 +123,19 @@ shadows:
     visible: true
     position: [0, -2, 0]
     opacity: 0.3
+
+# レンダリング設定
+rendering:
+  # トーンマッピングのタイプ
+  # "NoTone", "Linear", "Reinhard", "Cineon", "ACESFilmic"
+  toneMapping: "ACESFilmic"
+  
+  # 露出（明るさ）0.5-3.0
+  toneMappingExposure: 1.8
+  
+  # 環境マップのプリセット
+  # "sunset", "dawn", "night", "warehouse", "forest", "apartment", "studio", "city", "park", "lobby"
+  environmentPreset: "sunset"
+  
+  # 環境マップを有効にするか
+  environmentEnabled: true
