@@ -12,6 +12,7 @@ export interface Task {
   title: string;
   description?: string;
   status: 'todo' | 'doing' | 'done';
+  deadline?: Date;
   createdAt: Date;
   updatedAt: Date;
 }

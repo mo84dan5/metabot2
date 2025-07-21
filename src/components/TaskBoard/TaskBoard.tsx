@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { useStore } from '../../store/useStore';
 import type { Task } from '../../types';
 import TaskDetailDialog from './TaskDetailDialog';
@@ -62,7 +63,17 @@ const TaskBoard = () => {
   };
 
   const getTasksByStatus = (status: Task['status']) => {
-    return tasks.filter(task => task.status === status);
+    return tasks
+      .filter(task => task.status === status)
+      .sort((a, b) => {
+        // 期限がないタスクは最後に配置
+        if (!a.deadline && !b.deadline) return 0;
+        if (!a.deadline) return 1;
+        if (!b.deadline) return -1;
+        
+        // 期限が早い順にソート
+        return new Date(a.deadline).getTime() - new Date(b.deadline).getTime();
+      });
   };
 
   const handleTaskClick = (task: Task) => {
@@ -184,6 +195,25 @@ const TaskBoard = () => {
                         <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
                           {task.description}
                         </Typography>
+                      )}
+                      {task.deadline && (
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mt: 1 }}>
+                          <AccessTimeIcon 
+                            fontSize="small" 
+                            color={new Date(task.deadline) < new Date() ? 'error' : 'action'}
+                          />
+                          <Typography 
+                            variant="caption" 
+                            color={new Date(task.deadline) < new Date() ? 'error' : 'text.secondary'}
+                          >
+                            {new Date(task.deadline).toLocaleString('ja-JP', {
+                              month: 'numeric',
+                              day: 'numeric',
+                              hour: 'numeric',
+                              minute: 'numeric'
+                            })}
+                          </Typography>
+                        </Box>
                       )}
                       <IconButton
                         size="small"

@@ -13,11 +13,13 @@ import {
   Box,
   Typography,
   IconButton,
+  Chip,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import type { Task } from '../../types';
 
 interface TaskDetailDialogProps {
@@ -40,6 +42,7 @@ const TaskDetailDialog = ({ task, open, onClose, onUpdate, onDelete }: TaskDetai
       title: task.title,
       description: task.description || '',
       status: task.status,
+      deadline: task.deadline,
     });
   };
 
@@ -129,6 +132,18 @@ const TaskDetailDialog = ({ task, open, onClose, onUpdate, onDelete }: TaskDetai
               </Box>
             </Box>
 
+            {task.deadline && (
+              <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
+                <AccessTimeIcon fontSize="small" color="action" />
+                <Chip
+                  label={`期限: ${new Date(task.deadline).toLocaleString('ja-JP')}`}
+                  size="small"
+                  color={new Date(task.deadline) < new Date() ? 'error' : 'default'}
+                  variant={new Date(task.deadline) < new Date() ? 'filled' : 'outlined'}
+                />
+              </Box>
+            )}
+
             {task.description && (
               <Box sx={{ mb: 3 }}>
                 <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
@@ -172,6 +187,18 @@ const TaskDetailDialog = ({ task, open, onClose, onUpdate, onDelete }: TaskDetai
                 <MenuItem value="done">完了</MenuItem>
               </Select>
             </FormControl>
+
+            <TextField
+              fullWidth
+              label="期限"
+              type="datetime-local"
+              value={editedTask.deadline ? new Date(editedTask.deadline).toISOString().slice(0, -1) : ''}
+              onChange={(e) => setEditedTask({ ...editedTask, deadline: e.target.value ? new Date(e.target.value) : undefined })}
+              sx={{ mb: 3 }}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
 
             <TextField
               fullWidth
