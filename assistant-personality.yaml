@@ -96,6 +96,6 @@ closing_message: 技術とかわいいは共存できる！そんなメカコを
 
 # 音声設定
 voice_settings:
-  voice: sage  # alloy, ash, ballad, coral, echo, fable, onyx, nova, sage, shimmer, verse から選択
+  voice: nova  # alloy, ash, ballad, coral, echo, fable, onyx, nova, sage, shimmer, verse から選択
   speed: 1.1  # 0.25 から 4.0 の範囲（1.0が標準）
   instructions: 明るく元気で、少し早口で話してください。技術的な話題には特に興奮した感じで。
