@@ -86,6 +86,12 @@ const defaultConfig: ModelConfig = {
       opacity: 0.3,
     },
   },
+  rendering: {
+    toneMapping: 'ACESFilmic',
+    toneMappingExposure: 1.8,
+    environmentPreset: 'sunset',
+    environmentEnabled: true,
+  },
 };
 
 export const useModelConfig = () => {
@@ -166,6 +172,10 @@ export const useModelConfig = () => {
                 ...defaultConfig.shadows.ground,
                 ...(parsedConfig.shadows?.ground || {}),
               },
+            },
+            rendering: {
+              ...defaultConfig.rendering,
+              ...(parsedConfig.rendering || {}),
             },
           };
           console.log('Final merged config:', mergedConfig);

@@ -220,6 +220,18 @@ const MetabotWithFallback = ({ onClick, config }: MetabotProps) => {
   );
 };
 
+// トーンマッピングのタイプを取得
+const getToneMapping = (type?: string) => {
+  switch (type) {
+    case 'NoTone': return THREE.NoToneMapping;
+    case 'Linear': return THREE.LinearToneMapping;
+    case 'Reinhard': return THREE.ReinhardToneMapping;
+    case 'Cineon': return THREE.CineonToneMapping;
+    case 'ACESFilmic': return THREE.ACESFilmicToneMapping;
+    default: return THREE.ACESFilmicToneMapping;
+  }
+};
+
 // ポイントライトをモデル周囲に配置する関数
 const generateLightPositions = (basePosition: [number, number, number], distance: number): [number, number, number][] => {
   const [x, y, z] = basePosition;
@@ -288,8 +300,8 @@ const Metabot3D = () => {
         style={{ background: 'transparent' }}
         shadows={config.shadows.enabled}
         gl={{
-          toneMapping: THREE.ACESFilmicToneMapping,
-          toneMappingExposure: 1.8,
+          toneMapping: getToneMapping(config.rendering?.toneMapping),
+          toneMappingExposure: config.rendering?.toneMappingExposure || 1.8,
           outputColorSpace: THREE.SRGBColorSpace,
         }}
       >
@@ -379,7 +391,9 @@ const Metabot3D = () => {
         )}
         
         {/* 環境マップを追加（HDRIで反射と照明を改善） */}
-        <Environment preset="sunset" />
+        {config.rendering?.environmentEnabled && (
+          <Environment preset={config.rendering?.environmentPreset || "sunset"} />
+        )}
         
         <MetabotWithFallback onClick={handleMetabotClick} config={config} />
         

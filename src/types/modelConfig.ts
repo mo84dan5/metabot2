@@ -80,4 +80,10 @@ export interface ModelConfig {
       opacity: number;
     };
   };
+  rendering?: {
+    toneMapping?: 'NoTone' | 'Linear' | 'Reinhard' | 'Cineon' | 'ACESFilmic';
+    toneMappingExposure?: number;
+    environmentPreset?: 'sunset' | 'dawn' | 'night' | 'warehouse' | 'forest' | 'apartment' | 'studio' | 'city' | 'park' | 'lobby';
+    environmentEnabled?: boolean;
+  };
 }
