@@ -63,7 +63,15 @@ const TaskBoard = () => {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ py: 3 }}>
+    <Container 
+      maxWidth="lg" 
+      sx={{ 
+        py: 3,
+        height: '100vh',
+        overflow: 'auto',
+        WebkitOverflowScrolling: 'touch', // iOS smooth scrolling
+      }}
+    >
       <Typography variant="h4" sx={{ mb: 3, fontWeight: 600 }}>
         タスク管理
       </Typography>
@@ -88,14 +96,24 @@ const TaskBoard = () => {
         </Button>
       </Box>
 
-      <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+      <Box sx={{ 
+        display: 'flex', 
+        gap: 2, 
+        flexDirection: { xs: 'column', md: 'row' },
+        pb: { xs: 10, md: 3 }, // スマホで下部に余白を追加
+      }}>
         {columns.map((column) => (
-          <Box key={column.id} sx={{ flex: { xs: '1 1 100%', md: '1 1 30%' } }}>
+          <Box key={column.id} sx={{ 
+            flex: { xs: '0 0 auto', md: '1 1 30%' },
+            minWidth: { xs: '100%', md: 0 },
+          }}>
             <Paper
               sx={{
-                height: '100%',
-                minHeight: 400,
+                height: { xs: 'auto', md: '100%' },
+                minHeight: { xs: 300, md: 400 },
+                maxHeight: { xs: 400, md: 'none' },
                 backgroundColor: 'grey.50',
+                overflow: { xs: 'hidden', md: 'visible' },
               }}
               onDragOver={handleDragOver}
               onDrop={(e) => handleDrop(e, column.id as Task['status'])}
@@ -123,7 +141,12 @@ const TaskBoard = () => {
                 />
               </Box>
               
-              <Box sx={{ p: 2 }}>
+              <Box sx={{ 
+                p: 2,
+                maxHeight: { xs: 300, md: 'calc(100% - 64px)' },
+                overflow: 'auto',
+                WebkitOverflowScrolling: 'touch',
+              }}>
                 {getTasksByStatus(column.id as Task['status']).map((task) => (
                   <Card
                     key={task.id}
