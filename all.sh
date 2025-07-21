@@ -17,7 +17,7 @@ npm run build
 
 if [ $? -eq 0 ]; then
     echo "📤 GitHub Pagesにデプロイ中..."
-    npm run deploy
+    gh-pages -d dist
     
     if [ $? -eq 0 ]; then
         echo "✅ すべて完了！"
