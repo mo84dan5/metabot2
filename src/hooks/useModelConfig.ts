@@ -92,8 +92,33 @@ export const useModelConfig = () => {
         const response = await fetch('/metabot2/models/metabot.yaml');
         if (response.ok) {
           const yamlText = await response.text();
-          const parsedConfig = yaml.load(yamlText) as ModelConfig;
-          setConfig({ ...defaultConfig, ...parsedConfig });
+          const parsedConfig = yaml.load(yamlText) as any;
+          // Deep merge to preserve nested structure
+          const mergedConfig = {
+            ...defaultConfig,
+            ...parsedConfig,
+            lighting: {
+              ...defaultConfig.lighting,
+              ...parsedConfig.lighting,
+            },
+            camera: {
+              ...defaultConfig.camera,
+              ...parsedConfig.camera,
+              controls: {
+                ...defaultConfig.camera.controls,
+                ...(parsedConfig.camera?.controls || {}),
+              },
+            },
+            shadows: {
+              ...defaultConfig.shadows,
+              ...parsedConfig.shadows,
+              ground: {
+                ...defaultConfig.shadows.ground,
+                ...(parsedConfig.shadows?.ground || {}),
+              },
+            },
+          };
+          setConfig(mergedConfig);
         }
       } catch (error) {
         console.log('YAMLファイルが見つからないため、デフォルト設定を使用します');
