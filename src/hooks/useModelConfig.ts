@@ -4,7 +4,7 @@ import type { ModelConfig } from '../types/modelConfig';
 
 const defaultConfig: ModelConfig = {
   model: {
-    scale: 1.0,
+    scale: 3.0,
     position: [0, 0, 0],
     rotation: [0, 0, 0],
   },
@@ -63,8 +63,8 @@ const defaultConfig: ModelConfig = {
     },
   },
   camera: {
-    position: [0, 1, 6],
-    fov: 45,
+    position: [0, 3, 2],
+    fov: 75,
     controls: {
       enablePan: false,
       enableZoom: false,

@@ -3,7 +3,7 @@
 
 model:
   # モデルのスケール（大きさ）
-  scale: 1.0
+  scale: 3.0
   
   # モデルの位置 [x, y, z]
   position: [0, 0, 0]
@@ -81,10 +81,10 @@ lighting:
 # カメラ設定
 camera:
   # カメラの初期位置 [x, y, z]
-  position: [0, 1, 6]
+  position: [0, 3, 2]
   
   # 視野角（FOV）
-  fov: 45
+  fov: 75
   
   # OrbitControlsの設定
   controls:
