@@ -111,6 +111,35 @@ export const useModelConfig = () => {
             lighting: {
               ...defaultConfig.lighting,
               ...(parsedConfig.lighting || {}),
+              hemisphere: {
+                ...defaultConfig.lighting.hemisphere,
+                ...(parsedConfig.lighting?.hemisphere || {}),
+              },
+              ambient: {
+                ...defaultConfig.lighting.ambient,
+                ...(parsedConfig.lighting?.ambient || {}),
+              },
+              pointLights: {
+                ...defaultConfig.lighting.pointLights,
+                ...(parsedConfig.lighting?.pointLights || {}),
+                lights: parsedConfig.lighting?.pointLights?.lights || defaultConfig.lighting.pointLights.lights,
+              },
+              key: {
+                ...defaultConfig.lighting.key,
+                ...(parsedConfig.lighting?.key || {}),
+              },
+              fill: {
+                ...defaultConfig.lighting.fill,
+                ...(parsedConfig.lighting?.fill || {}),
+              },
+              rim: {
+                ...defaultConfig.lighting.rim,
+                ...(parsedConfig.lighting?.rim || {}),
+              },
+              camera: {
+                ...defaultConfig.lighting.camera,
+                ...(parsedConfig.lighting?.camera || {}),
+              },
             },
             camera: {
               ...defaultConfig.camera,
