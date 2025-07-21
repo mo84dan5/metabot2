@@ -159,6 +159,12 @@ export const useModelConfig = () => {
             },
           };
           console.log('Final merged config:', mergedConfig);
+          console.log('Lighting config details:', {
+            hemisphere: mergedConfig.lighting.hemisphere,
+            ambient: mergedConfig.lighting.ambient,
+            pointLights: mergedConfig.lighting.pointLights,
+            'pointLights.lights count': mergedConfig.lighting.pointLights.lights.length,
+          });
           setConfig(mergedConfig);
         }
       } catch (error) {

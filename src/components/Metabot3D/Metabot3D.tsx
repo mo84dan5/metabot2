@@ -218,6 +218,26 @@ const generateLightPositions = (basePosition: [number, number, number], distance
 
 const Metabot3D = () => {
   const { config, loading } = useModelConfig();
+  
+  // デバッグ用ログ
+  useEffect(() => {
+    if (!loading) {
+      console.log('Metabot3D lighting config:', {
+        hemisphere: config.lighting.hemisphere,
+        pointLights: config.lighting.pointLights,
+        'lights enabled': {
+          hemisphere: config.lighting.hemisphere.enabled,
+          ambient: config.lighting.ambient.enabled,
+          pointLights: config.lighting.pointLights.enabled,
+          key: config.lighting.key.enabled,
+          camera: config.lighting.camera.enabled,
+        }
+      });
+      // デバッグ用にグローバルに公開
+      (window as any).__METABOT_CONFIG = config;
+    }
+  }, [config, loading]);
+  
   const handleMetabotClick = () => {
     console.log('metabotがクリックされました！');
   };
@@ -276,8 +296,8 @@ const Metabot3D = () => {
               <pointLight
                 key={`generated-light-${index}`}
                 position={position}
-                intensity={1}
-                distance={10}
+                intensity={1.5}
+                distance={20}
                 color="#ffffff"
               />
             ))}
