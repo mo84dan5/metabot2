@@ -3,13 +3,13 @@
 
 model:
   # モデルのスケール（大きさ）
-  scale: 3.0
+  scale: 5.0
   
   # モデルの位置 [x, y, z]
-  position: [0, 0, 0]
+  position: [0, -4, 0]
   
   # モデルの回転 [x, y, z] （度数法）
-  rotation: [0, 0, 0]
+  rotation: [-30, 0, 0]
 
 # マテリアル設定（モデルの見た目）
 material:
@@ -20,7 +20,7 @@ material:
   emissiveIntensity: 0.3
   
   # メタリック調整係数（元の値に掛ける）
-  metalnessScale: 1.5
+  metalnessScale: 0.7
   
   # 粗さ調整係数（元の値に掛ける）
   roughnessScale: 0.6

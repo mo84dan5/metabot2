@@ -140,7 +140,7 @@ const Chat = () => {
         <Box
           sx={{
             position: 'absolute',
-            bottom: '100px', // 入力欄の高さ分上に配置
+            bottom: 'calc(100px + env(safe-area-inset-bottom, 0px))', // 入力欄の高さ分上に配置
             left: '50%',
             transform: 'translateX(-50%)',
             zIndex: 100,
@@ -191,15 +191,18 @@ const Chat = () => {
 
       <Box
         sx={{
-          position: 'absolute',
+          position: 'fixed',
           bottom: 0,
           left: 0,
           right: 0,
           p: 2,
-          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+          pb: 'calc(env(safe-area-inset-bottom, 0px) + 16px)',
+          backgroundColor: 'rgba(255, 255, 255, 0.95)',
           backdropFilter: 'blur(10px)',
           borderTop: 1,
           borderColor: 'divider',
+          zIndex: 1300,
+          boxShadow: '0 -2px 10px rgba(0,0,0,0.1)',
         }}
       >
         <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
