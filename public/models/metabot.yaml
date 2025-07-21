@@ -1,0 +1,80 @@
+# metabot.glb 設定ファイル
+# このファイルを編集して、3Dモデルの表示をカスタマイズできます
+
+model:
+  # モデルのスケール（大きさ）
+  scale: 1.0
+  
+  # モデルの位置 [x, y, z]
+  position: [0, 0, 0]
+  
+  # モデルの回転 [x, y, z] （度数法）
+  rotation: [0, 0, 0]
+
+# アニメーション設定
+animations:
+  # 再生するアニメーション名（空の場合はすべて再生）
+  # 例: ["idle", "walk"]
+  play: []
+  
+  # ループ再生するか
+  loop: true
+  
+  # 再生速度（1.0が標準速度）
+  timeScale: 1.0
+
+# ライティング設定
+lighting:
+  # 環境光
+  ambient:
+    intensity: 0.4
+    color: "#ffffff"
+  
+  # メインライト（キーライト）
+  key:
+    position: [5, 10, 5]
+    intensity: 0.6
+    color: "#ffffff"
+    castShadow: true
+  
+  # 補助ライト（フィルライト）
+  fill:
+    position: [-5, 5, -5]
+    intensity: 0.3
+    color: "#88ccff"
+  
+  # リムライト（輪郭光）
+  rim:
+    position: [0, 5, -10]
+    intensity: 0.4
+    color: "#ffffff"
+  
+  # カメラライト
+  camera:
+    enabled: true
+    intensity: 0.8
+    color: "#ffffff"
+
+# カメラ設定
+camera:
+  # カメラの初期位置 [x, y, z]
+  position: [0, 1, 6]
+  
+  # 視野角（FOV）
+  fov: 45
+  
+  # OrbitControlsの設定
+  controls:
+    enablePan: false
+    enableZoom: false
+    minPolarAngle: 60  # 度数法
+    maxPolarAngle: 90  # 度数法
+
+# 影の設定
+shadows:
+  enabled: true
+  # 地面の影
+  ground:
+    visible: true
+    position: [0, -2, 0]
+    opacity: 0.3
