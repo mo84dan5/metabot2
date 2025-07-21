@@ -90,20 +90,31 @@ export const useModelConfig = () => {
     const loadConfig = async () => {
       try {
         const response = await fetch('/metabot2/models/metabot.yaml');
+        console.log('Fetching YAML from:', '/metabot2/models/metabot.yaml');
+        console.log('Response status:', response.status);
         if (response.ok) {
           const yamlText = await response.text();
+          console.log('YAML text loaded:', yamlText.substring(0, 200));
           const parsedConfig = yaml.load(yamlText) as any;
+          console.log('Parsed YAML config:', parsedConfig);
           // Deep merge to preserve nested structure
           const mergedConfig = {
             ...defaultConfig,
-            ...parsedConfig,
+            model: {
+              ...defaultConfig.model,
+              ...(parsedConfig.model || {}),
+            },
+            animations: {
+              ...defaultConfig.animations,
+              ...(parsedConfig.animations || {}),
+            },
             lighting: {
               ...defaultConfig.lighting,
-              ...parsedConfig.lighting,
+              ...(parsedConfig.lighting || {}),
             },
             camera: {
               ...defaultConfig.camera,
-              ...parsedConfig.camera,
+              ...(parsedConfig.camera || {}),
               controls: {
                 ...defaultConfig.camera.controls,
                 ...(parsedConfig.camera?.controls || {}),
@@ -111,13 +122,14 @@ export const useModelConfig = () => {
             },
             shadows: {
               ...defaultConfig.shadows,
-              ...parsedConfig.shadows,
+              ...(parsedConfig.shadows || {}),
               ground: {
                 ...defaultConfig.shadows.ground,
                 ...(parsedConfig.shadows?.ground || {}),
               },
             },
           };
+          console.log('Final merged config:', mergedConfig);
           setConfig(mergedConfig);
         }
       } catch (error) {
