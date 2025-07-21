@@ -4,6 +4,12 @@ export interface ModelConfig {
     position: [number, number, number];
     rotation: [number, number, number];
   };
+  material?: {
+    envMapIntensity?: number;
+    emissiveIntensity?: number;
+    metalnessScale?: number;
+    roughnessScale?: number;
+  };
   animations: {
     play: string[];
     loop: boolean;

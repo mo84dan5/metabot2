@@ -8,6 +8,12 @@ const defaultConfig: ModelConfig = {
     position: [0, 0, 0],
     rotation: [0, 0, 0],
   },
+  material: {
+    envMapIntensity: 2.0,
+    emissiveIntensity: 0.5,
+    metalnessScale: 1.2,
+    roughnessScale: 0.8,
+  },
   animations: {
     play: [],
     loop: true,
@@ -103,6 +109,10 @@ export const useModelConfig = () => {
             model: {
               ...defaultConfig.model,
               ...(parsedConfig.model || {}),
+            },
+            material: {
+              ...defaultConfig.material,
+              ...(parsedConfig.material || {}),
             },
             animations: {
               ...defaultConfig.animations,

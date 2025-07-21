@@ -1,6 +1,6 @@
 import { useRef, useState, Suspense, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, useGLTF, useAnimations } from '@react-three/drei';
+import { OrbitControls, useGLTF, useAnimations, Environment } from '@react-three/drei';
 import * as THREE from 'three';
 import { useModelConfig } from '../../hooks/useModelConfig';
 import type { ModelConfig } from '../../types/modelConfig';
@@ -66,6 +66,31 @@ const MetabotGLB = ({ onClick, config }: MetabotProps) => {
       // 参考コードと同じように、frustumCulledをfalseに設定
       scene.traverse((object) => {
         object.frustumCulled = false;
+        
+        // マテリアルを明るくする
+        if ((object as any).isMesh) {
+          const mesh = object as THREE.Mesh;
+          if (mesh.material) {
+            const material = mesh.material as any;
+            
+            // マテリアルがMeshStandardMaterialまたはMeshPhysicalMaterialの場合
+            if (material.isMeshStandardMaterial || material.isMeshPhysicalMaterial) {
+              // 環境マップの反射強度を上げる
+              material.envMapIntensity = config.material?.envMapIntensity || 2.0;
+              
+              // メタリックと粗さを調整して反射を増やす
+              material.metalness = Math.min(material.metalness * (config.material?.metalnessScale || 1.2), 1.0);
+              material.roughness = Math.max(material.roughness * (config.material?.roughnessScale || 0.8), 0.0);
+              
+              // 発光色を追加（わずかに光らせる）
+              material.emissive = new THREE.Color(0x222222);
+              material.emissiveIntensity = config.material?.emissiveIntensity || 0.5;
+              
+              // マテリアルを更新
+              material.needsUpdate = true;
+            }
+          }
+        }
       });
     }
   }, [scene, config.model]);
@@ -262,6 +287,11 @@ const Metabot3D = () => {
         }}
         style={{ background: 'transparent' }}
         shadows={config.shadows.enabled}
+        gl={{
+          toneMapping: THREE.ACESFilmicToneMapping,
+          toneMappingExposure: 1.8,
+          outputColorSpace: THREE.SRGBColorSpace,
+        }}
       >
         {/* 半球ライト */}
         {config.lighting.hemisphere.enabled && (
@@ -347,6 +377,9 @@ const Metabot3D = () => {
             <shadowMaterial opacity={config.shadows.ground.opacity} />
           </mesh>
         )}
+        
+        {/* 環境マップを追加（HDRIで反射と照明を改善） */}
+        <Environment preset="sunset" />
         
         <MetabotWithFallback onClick={handleMetabotClick} config={config} />
         

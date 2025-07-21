@@ -11,6 +11,20 @@ model:
   # モデルの回転 [x, y, z] （度数法）
   rotation: [0, 0, 0]
 
+# マテリアル設定（モデルの見た目）
+material:
+  # 環境マップの反射強度（0-5）
+  envMapIntensity: 3.0
+  
+  # 発光の強度（0-1）
+  emissiveIntensity: 0.3
+  
+  # メタリック調整係数（元の値に掛ける）
+  metalnessScale: 1.5
+  
+  # 粗さ調整係数（元の値に掛ける）
+  roughnessScale: 0.6
+
 # アニメーション設定
 animations:
   # 再生するアニメーション名（空の場合はすべて再生）
