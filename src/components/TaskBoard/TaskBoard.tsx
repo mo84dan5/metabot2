@@ -15,11 +15,14 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useStore } from '../../store/useStore';
 import type { Task } from '../../types';
+import TaskDetailDialog from './TaskDetailDialog';
 
 const TaskBoard = () => {
   const { tasks, addTask, updateTask, deleteTask } = useStore();
   const [newTaskTitle, setNewTaskTitle] = useState('');
   const [draggedTask, setDraggedTask] = useState<Task | null>(null);
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const columns = [
     { id: 'todo', title: 'やること', color: '#ff6b6b' },
@@ -60,6 +63,16 @@ const TaskBoard = () => {
 
   const getTasksByStatus = (status: Task['status']) => {
     return tasks.filter(task => task.status === status);
+  };
+
+  const handleTaskClick = (task: Task) => {
+    setSelectedTask(task);
+    setDialogOpen(true);
+  };
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+    setSelectedTask(null);
   };
 
   return (
@@ -152,9 +165,10 @@ const TaskBoard = () => {
                     key={task.id}
                     draggable
                     onDragStart={() => handleDragStart(task)}
+                    onClick={() => handleTaskClick(task)}
                     sx={{
                       mb: 2,
-                      cursor: 'move',
+                      cursor: 'pointer',
                       '&:hover': {
                         boxShadow: 3,
                         transform: 'translateY(-2px)',
@@ -173,7 +187,10 @@ const TaskBoard = () => {
                       )}
                       <IconButton
                         size="small"
-                        onClick={() => deleteTask(task.id)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          deleteTask(task.id);
+                        }}
                         sx={{
                           position: 'absolute',
                           top: 8,
@@ -194,6 +211,14 @@ const TaskBoard = () => {
           </Box>
         ))}
       </Box>
+
+      <TaskDetailDialog
+        task={selectedTask}
+        open={dialogOpen}
+        onClose={handleDialogClose}
+        onUpdate={updateTask}
+        onDelete={deleteTask}
+      />
     </Container>
   );
 };
