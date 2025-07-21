@@ -29,13 +29,13 @@ lighting:
   hemisphere:
     enabled: true
     skyColor: "#ffffff"
-    groundColor: "#444444"
-    intensity: 1.0
+    groundColor: "#888888"
+    intensity: 1.5
   
   # 環境光
   ambient:
-    enabled: false
-    intensity: 0.4
+    enabled: true
+    intensity: 0.6
     color: "#ffffff"
   
   # ポイントライト群（モデル周囲）
@@ -46,8 +46,16 @@ lighting:
     # 各ライトの設定
     lights:
       - position: [0, 3, 2]
-        intensity: 1
-        distance: 10
+        intensity: 2
+        distance: 20
+        color: "#ffffff"
+      - position: [3, 3, 3]
+        intensity: 1.5
+        distance: 15
+        color: "#ffffff"
+      - position: [-3, 3, 3]
+        intensity: 1.5
+        distance: 15
         color: "#ffffff"
   
   # メインライト（キーライト）
