@@ -10,8 +10,8 @@
     "preview": "vite preview",
     "test": "playwright test",
     "save": "git add -A && git commit -m 'Update' && git push",
-    "publish": "git pull origin main && npm run build && gh-pages -d dist",
-    "release": "git add -A && git commit -m 'Release update' && git push && npm run publish",
+    "publish": "npm run build && git add dist -f && git commit -m 'Update dist' && git push",
+    "release": "npm run build && git add -A && git commit -m 'Release update' && git push",
     "check": "./scripts/check-sync.sh"
   },
   "dependencies": {
