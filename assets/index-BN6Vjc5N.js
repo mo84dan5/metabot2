@@ -4265,6 +4265,9 @@ ${e?.tasks?`
 - タスク情報:
 ${JSON.stringify(e.tasks.map(o=>({id:o.id,title:o.title,description:o.description,status:o.status,deadline:o.deadline,createdAt:o.createdAt,updatedAt:o.updatedAt})),null,2)}`:""}
 
+タスク情報は聞かれたら以上のタスクをすべて答えてあげてください。
+これ以外のタスクをタスクとして保持しないでください
+
 利用可能な機能:
 - add_task: 新しいタスクを追加できます
 
