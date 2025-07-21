@@ -1,14 +1,47 @@
 import { useRef, useState, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
+import { OrbitControls, useGLTF, Center } from '@react-three/drei';
 import * as THREE from 'three';
 
 interface MetabotProps {
   onClick?: () => void;
 }
 
-// デフォルトのmetabot
-const Metabot = ({ onClick }: MetabotProps) => {
+// GLBモデルを使ったmetabot
+const MetabotGLB = ({ onClick }: MetabotProps) => {
+  const meshRef = useRef<THREE.Group>(null);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const { scene } = useGLTF('/metabot2/models/metabot.glb');
+
+  useFrame((state) => {
+    if (meshRef.current) {
+      // 基本的な回転
+      meshRef.current.rotation.y += 0.005;
+      
+      // クリック時のアニメーション
+      if (isAnimating) {
+        meshRef.current.position.y = Math.sin(state.clock.elapsedTime * 5) * 0.1;
+      }
+    }
+  });
+
+  const handleClick = () => {
+    setIsAnimating(true);
+    setTimeout(() => setIsAnimating(false), 2000);
+    onClick?.();
+  };
+
+  return (
+    <Center>
+      <group ref={meshRef} onClick={handleClick}>
+        <primitive object={scene} scale={1} />
+      </group>
+    </Center>
+  );
+};
+
+// デフォルトのmetabot（GLBがロードできない場合のフォールバック）
+const MetabotDefault = ({ onClick }: MetabotProps) => {
   const meshRef = useRef<THREE.Group>(null);
   const [isAnimating, setIsAnimating] = useState(false);
 
@@ -67,6 +100,15 @@ const Metabot = ({ onClick }: MetabotProps) => {
   );
 };
 
+// エラーバウンダリーで包まれたMetabot
+const MetabotWithFallback = ({ onClick }: MetabotProps) => {
+  return (
+    <Suspense fallback={<MetabotDefault onClick={onClick} />}>
+      <MetabotGLB onClick={onClick} />
+    </Suspense>
+  );
+};
+
 const Metabot3D = () => {
   const handleMetabotClick = () => {
     console.log('metabotがクリックされました！');
@@ -90,9 +132,7 @@ const Metabot3D = () => {
         <directionalLight position={[0, 10, 5]} intensity={0.4} />
         <directionalLight position={[-5, 5, -5]} intensity={0.3} color="#88ccff" />
         
-        <Suspense fallback={null}>
-          <Metabot onClick={handleMetabotClick} />
-        </Suspense>
+        <MetabotWithFallback onClick={handleMetabotClick} />
         
         <OrbitControls 
           enablePan={false} 
@@ -104,5 +144,8 @@ const Metabot3D = () => {
     </div>
   );
 };
+
+// GLBモデルのプリロード
+useGLTF.preload('/metabot2/models/metabot.glb');
 
 export default Metabot3D;
