@@ -37,28 +37,27 @@ const CameraLight = ({ config }: { config: ModelConfig['lighting']['camera'] }) 
 
 // GLBモデルを使ったmetabot
 const MetabotGLB = ({ onClick, config }: MetabotProps) => {
-  const meshRef = useRef<THREE.Group>(null);
   const [isAnimating, setIsAnimating] = useState(false);
   const { scene, animations } = useGLTF('/metabot2/models/metabot.glb');
   const { actions } = useAnimations(animations, scene);
 
   // モデルの変換を適用
   useEffect(() => {
-    if (meshRef.current) {
-      // スケール
-      meshRef.current.scale.setScalar(config.model.scale);
+    if (scene) {
+      // GLBモデルのsceneに直接スケールを適用（参考コードと同じ方法）
+      scene.scale.set(config.model.scale, config.model.scale, config.model.scale);
       
       // 位置
-      meshRef.current.position.set(...config.model.position);
+      scene.position.set(...config.model.position);
       
       // 回転（度数法からラジアンに変換）
-      meshRef.current.rotation.set(
+      scene.rotation.set(
         THREE.MathUtils.degToRad(config.model.rotation[0]),
         THREE.MathUtils.degToRad(config.model.rotation[1]),
         THREE.MathUtils.degToRad(config.model.rotation[2])
       );
     }
-  }, [config.model]);
+  }, [scene, config.model]);
 
   // アニメーションの再生
   useEffect(() => {
@@ -97,9 +96,9 @@ const MetabotGLB = ({ onClick, config }: MetabotProps) => {
   }, [actions, config.animations]);
 
   useFrame((state) => {
-    if (meshRef.current && isAnimating) {
+    if (scene && isAnimating) {
       // クリック時のバウンスアニメーション
-      meshRef.current.position.y = config.model.position[1] + Math.sin(state.clock.elapsedTime * 5) * 0.1;
+      scene.position.y = config.model.position[1] + Math.sin(state.clock.elapsedTime * 5) * 0.1;
     }
   });
 
@@ -110,9 +109,7 @@ const MetabotGLB = ({ onClick, config }: MetabotProps) => {
   };
 
   return (
-    <group ref={meshRef} onClick={handleClick}>
-      <primitive object={scene} />
-    </group>
+    <primitive object={scene} onClick={handleClick} />
   );
 };
 
