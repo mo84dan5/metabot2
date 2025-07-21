@@ -1,6 +1,6 @@
 import { useRef, useState, Suspense, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, useGLTF, Center, useAnimations } from '@react-three/drei';
+import { OrbitControls, useGLTF, useAnimations } from '@react-three/drei';
 import * as THREE from 'three';
 import { useModelConfig } from '../../hooks/useModelConfig';
 import type { ModelConfig } from '../../types/modelConfig';
