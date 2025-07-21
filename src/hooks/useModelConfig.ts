@@ -14,28 +14,50 @@ const defaultConfig: ModelConfig = {
     timeScale: 1.0,
   },
   lighting: {
+    hemisphere: {
+      enabled: true,
+      skyColor: '#ffffff',
+      groundColor: '#444444',
+      intensity: 1.0,
+    },
     ambient: {
+      enabled: false,
       intensity: 0.4,
       color: '#ffffff',
     },
+    pointLights: {
+      enabled: true,
+      distance: 10,
+      lights: [
+        {
+          position: [0, 3, 2],
+          intensity: 1,
+          distance: 10,
+          color: '#ffffff',
+        },
+      ],
+    },
     key: {
+      enabled: false,
       position: [5, 10, 5],
       intensity: 0.6,
       color: '#ffffff',
       castShadow: true,
     },
     fill: {
+      enabled: false,
       position: [-5, 5, -5],
       intensity: 0.3,
       color: '#88ccff',
     },
     rim: {
+      enabled: false,
       position: [0, 5, -10],
       intensity: 0.4,
       color: '#ffffff',
     },
     camera: {
-      enabled: true,
+      enabled: false,
       intensity: 0.8,
       color: '#ffffff',
     },

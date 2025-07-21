@@ -187,6 +187,27 @@ const MetabotWithFallback = ({ onClick, config }: MetabotProps) => {
   );
 };
 
+// ポイントライトをモデル周囲に配置する関数
+const generateLightPositions = (basePosition: [number, number, number], distance: number): [number, number, number][] => {
+  const [x, y, z] = basePosition;
+  const positions: [number, number, number][] = [];
+  
+  // 全ての組み合わせを生成（+d, -d, 0）
+  const offsets = [distance, -distance, 0];
+  
+  offsets.forEach(dx => {
+    offsets.forEach(dy => {
+      offsets.forEach(dz => {
+        // 全てが0の場合はスキップ
+        if (dx === 0 && dy === 0 && dz === 0) return;
+        positions.push([x + dx, y + dy, z + dz]);
+      });
+    });
+  });
+  
+  return positions;
+};
+
 const Metabot3D = () => {
   const { config, loading } = useModelConfig();
   const handleMetabotClick = () => {
@@ -214,34 +235,75 @@ const Metabot3D = () => {
         style={{ background: 'transparent' }}
         shadows={config.shadows.enabled}
       >
+        {/* 半球ライト */}
+        {config.lighting.hemisphere.enabled && (
+          <hemisphereLight
+            args={[config.lighting.hemisphere.skyColor, config.lighting.hemisphere.groundColor, config.lighting.hemisphere.intensity]}
+          />
+        )}
+        
         {/* 環境光 */}
-        <ambientLight 
-          intensity={config.lighting.ambient.intensity} 
-          color={config.lighting.ambient.color}
-        />
+        {config.lighting.ambient.enabled && (
+          <ambientLight 
+            intensity={config.lighting.ambient.intensity} 
+            color={config.lighting.ambient.color}
+          />
+        )}
+        
+        {/* ポイントライト群 */}
+        {config.lighting.pointLights.enabled && (
+          <>
+            {/* 設定で指定されたライト */}
+            {config.lighting.pointLights.lights.map((light, index) => (
+              <pointLight
+                key={`config-light-${index}`}
+                position={light.position}
+                intensity={light.intensity}
+                distance={light.distance}
+                color={light.color}
+              />
+            ))}
+            {/* モデル周囲に自動生成されるライト */}
+            {generateLightPositions([0, 0, 0], config.lighting.pointLights.distance).map((position, index) => (
+              <pointLight
+                key={`generated-light-${index}`}
+                position={position}
+                intensity={1}
+                distance={10}
+                color="#ffffff"
+              />
+            ))}
+          </>
+        )}
         
         {/* キーライト */}
-        <directionalLight 
-          position={config.lighting.key.position} 
-          intensity={config.lighting.key.intensity} 
-          color={config.lighting.key.color}
-          castShadow={config.lighting.key.castShadow}
-          shadow-mapSize={[2048, 2048]}
-        />
+        {config.lighting.key.enabled && (
+          <directionalLight 
+            position={config.lighting.key.position} 
+            intensity={config.lighting.key.intensity} 
+            color={config.lighting.key.color}
+            castShadow={config.lighting.key.castShadow}
+            shadow-mapSize={[2048, 2048]}
+          />
+        )}
         
         {/* フィルライト */}
-        <directionalLight 
-          position={config.lighting.fill.position} 
-          intensity={config.lighting.fill.intensity} 
-          color={config.lighting.fill.color}
-        />
+        {config.lighting.fill.enabled && (
+          <directionalLight 
+            position={config.lighting.fill.position} 
+            intensity={config.lighting.fill.intensity} 
+            color={config.lighting.fill.color}
+          />
+        )}
         
         {/* リムライト */}
-        <directionalLight 
-          position={config.lighting.rim.position} 
-          intensity={config.lighting.rim.intensity} 
-          color={config.lighting.rim.color}
-        />
+        {config.lighting.rim.enabled && (
+          <directionalLight 
+            position={config.lighting.rim.position} 
+            intensity={config.lighting.rim.intensity} 
+            color={config.lighting.rim.color}
+          />
+        )}
         
         {/* カメラからのライト */}
         <CameraLight config={config.lighting.camera} />
