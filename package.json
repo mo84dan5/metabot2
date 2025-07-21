@@ -14,8 +14,10 @@
     "commit": "git add -A && git commit -m",
     "push": "git push",
     "deploy": "npm run build && gh-pages -d dist",
+    "deploy:safe": "./scripts/deploy-safe.sh",
+    "check": "./scripts/check-sync.sh",
     "save": "git add -A && git commit -m 'Update' && git push",
-    "publish": "npm run build && gh-pages -d dist",
+    "publish": "git pull origin main && npm run build && gh-pages -d dist",
     "release": "git add -A && git commit -m 'Release update' && git push && npm run publish",
     "quick": "npm run save",
     "full": "npm run release"
