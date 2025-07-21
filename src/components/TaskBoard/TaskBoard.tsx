@@ -9,7 +9,6 @@ import {
   CardContent,
   IconButton,
   Chip,
-  Grid,
   Paper,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
@@ -89,9 +88,9 @@ const TaskBoard = () => {
         </Button>
       </Box>
 
-      <Grid container spacing={2}>
+      <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
         {columns.map((column) => (
-          <Grid item xs={12} md={4} key={column.id}>
+          <Box key={column.id} sx={{ flex: { xs: '1 1 100%', md: '1 1 30%' } }}>
             <Paper
               sx={{
                 height: '100%',
@@ -169,9 +168,9 @@ const TaskBoard = () => {
                 ))}
               </Box>
             </Paper>
-          </Grid>
+          </Box>
         ))}
-      </Grid>
+      </Box>
     </Container>
   );
 };
