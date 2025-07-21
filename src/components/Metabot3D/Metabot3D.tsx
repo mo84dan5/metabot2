@@ -1,23 +1,16 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, useGLTF, Center } from '@react-three/drei';
+import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
-import { GLTF } from 'three-stdlib';
 
-interface RobotProps {
+interface MetabotProps {
   onClick?: () => void;
-  modelPath: string;
 }
 
-type GLTFResult = GLTF & {
-  nodes: any;
-  materials: any;
-};
-
-const RobotModel = ({ onClick, modelPath }: RobotProps) => {
+// デフォルトのmetabot
+const Metabot = ({ onClick }: MetabotProps) => {
   const meshRef = useRef<THREE.Group>(null);
   const [isAnimating, setIsAnimating] = useState(false);
-  const gltf = useGLTF(modelPath) as GLTFResult;
 
   useFrame((state) => {
     if (meshRef.current) {
@@ -38,43 +31,14 @@ const RobotModel = ({ onClick, modelPath }: RobotProps) => {
   };
 
   return (
-    <Center>
-      <group ref={meshRef} onClick={handleClick}>
-        <primitive object={gltf.scene} scale={1} />
-      </group>
-    </Center>
-  );
-};
-
-// デフォルトのロボット（GLBがない場合のフォールバック）
-const DefaultRobot = ({ onClick }: { onClick?: () => void }) => {
-  const meshRef = useRef<THREE.Group>(null);
-  const [isAnimating, setIsAnimating] = useState(false);
-
-  useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.y += 0.005;
-      if (isAnimating) {
-        meshRef.current.position.y = Math.sin(state.clock.elapsedTime * 5) * 0.1;
-      }
-    }
-  });
-
-  const handleClick = () => {
-    setIsAnimating(true);
-    setTimeout(() => setIsAnimating(false), 2000);
-    onClick?.();
-  };
-
-  return (
     <group ref={meshRef} onClick={handleClick}>
-      {/* ロボットのボディ */}
+      {/* metabotのボディ */}
       <mesh position={[0, 0, 0]}>
         <boxGeometry args={[1.5, 2, 1]} />
         <meshStandardMaterial color="#5a9fd4" metalness={0.6} roughness={0.2} />
       </mesh>
       
-      {/* ロボットの頭 */}
+      {/* metabotの頭 */}
       <mesh position={[0, 1.5, 0]}>
         <boxGeometry args={[1, 1, 0.8]} />
         <meshStandardMaterial color="#7bb8e8" metalness={0.6} roughness={0.2} />
@@ -103,16 +67,10 @@ const DefaultRobot = ({ onClick }: { onClick?: () => void }) => {
   );
 };
 
-interface Robot3DWithFallbackProps {
-  modelPath?: string;
-  onRobotClick?: () => void;
-}
-
-const Robot3DWithFallback = ({ 
-  modelPath = '/metabot2/models/robot.glb',
-  onRobotClick = () => console.log('ロボットがクリックされました！')
-}: Robot3DWithFallbackProps) => {
-  const [useDefaultModel, setUseDefaultModel] = useState(false);
+const Metabot3D = () => {
+  const handleMetabotClick = () => {
+    console.log('metabotがクリックされました！');
+  };
 
   return (
     <div style={{ 
@@ -126,18 +84,15 @@ const Robot3DWithFallback = ({
       <Canvas 
         camera={{ position: [0, 1, 6], fov: 45 }}
         style={{ background: 'transparent' }}
-        onError={() => setUseDefaultModel(true)}
       >
         <ambientLight intensity={0.6} />
         <pointLight position={[10, 10, 10]} intensity={0.8} />
         <directionalLight position={[0, 10, 5]} intensity={0.4} />
         <directionalLight position={[-5, 5, -5]} intensity={0.3} color="#88ccff" />
         
-        {useDefaultModel ? (
-          <DefaultRobot onClick={onRobotClick} />
-        ) : (
-          <RobotModel onClick={onRobotClick} modelPath={modelPath} />
-        )}
+        <Suspense fallback={null}>
+          <Metabot onClick={handleMetabotClick} />
+        </Suspense>
         
         <OrbitControls 
           enablePan={false} 
@@ -150,4 +105,4 @@ const Robot3DWithFallback = ({
   );
 };
 
-export default Robot3DWithFallback;
+export default Metabot3D;

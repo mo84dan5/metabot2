@@ -1,0 +1,1 @@
+export { default as Metabot3D } from './Metabot3D';

@@ -28,7 +28,7 @@ test.describe('Metabot2 App', () => {
     await expect(page.locator('.MuiAlert-root')).toBeVisible();
     await expect(page.locator('.MuiAlert-root')).toContainText('テストモードで実行中');
     
-    // 3Dロボットが表示されていることを確認
+    // 3D metabotが表示されていることを確認
     await expect(page.locator('canvas')).toBeVisible();
     
     // チャット入力欄が表示されていることを確認（MUI TextField）

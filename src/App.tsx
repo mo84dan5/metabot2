@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Box } from '@mui/material';
 import { useStore } from './store/useStore';
 import { Navigation } from './components/Navigation';
-import { Robot3D } from './components/Robot3D';
+import { Metabot3D } from './components/Metabot3D';
 import { Chat } from './components/Chat';
 import { ChatLog } from './components/ChatLog';
 import { TaskBoard } from './components/TaskBoard';
@@ -27,7 +27,7 @@ function App() {
       case 'chat':
         return (
           <Box sx={{ height: '100%', position: 'relative' }}>
-            <Robot3D />
+            <Metabot3D />
             <Chat />
           </Box>
         );
